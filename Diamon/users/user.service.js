@@ -26,6 +26,7 @@ let register = async (req) => {
             role: "customer",
             address: req.body.address,
             phone: req.body.phone,
+            fullName: req.body.fullName
         }
 
         const user = new db.User(newUser);
@@ -36,9 +37,7 @@ let register = async (req) => {
 }
 
 let login = async (req) => {
-    console.log(req.body)
     let user = await findUser(req.body);
-    console.log(user)
     if (user === null) {
         return {
             isSuccess: false,
@@ -84,6 +83,7 @@ let login = async (req) => {
                 refreshToken = user.refreshToken;
             }
 
+            user.password = ""
             return {
                 isSuccess: true,
                 message: "",

@@ -35,6 +35,9 @@ function registerSchema(req, res, next) {
     const schema = Joi.object({
         email: Joi.string().required(),
         password: Joi.string().required(),
+        fullName: Joi.string(),
+        address: Joi.string(),
+        phone: Joi.string()
     });
     validateRequest(req, next, schema);
 }

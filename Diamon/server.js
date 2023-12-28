@@ -20,5 +20,5 @@ app.use('/orders', require('./orders/order.controller'));
 app.use(errorHandler);
 
 // start server
-const port = process.env.NODE_ENV === 'production' ? (process.env.PORT || 80) : 4000;
+const port = process.env.NODE_ENV === 'production' ? (process.env.PORT || 80) : 6000;
 app.listen(port, () => console.log('Server listening on port ' + port));
