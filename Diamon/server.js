@@ -3,9 +3,9 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const errorHandler = require('_middleware/error-handler');
+const authMiddleWare = require("_middleware/authentication");
 
 app.use('/diamon/cover', express.static('public/images'))
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());

@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const Joi = require('joi');
 const validateRequest = require('_middleware/validate-request');
-const Role = require('_helpers/role');
 const bookService = require('./product.service');
 const { getHomePage } = require('./product.service');
 const { func } = require('joi');

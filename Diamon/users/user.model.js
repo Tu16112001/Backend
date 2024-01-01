@@ -9,7 +9,7 @@ function model(sequelize) {
         phone: { type: DataTypes.STRING, allowNull: true },
         role: {
             type: DataTypes.ENUM("admin", "customer"),
-        },        
+        },
         refreshToken: { type: DataTypes.STRING, allowNull: true },
     };
 

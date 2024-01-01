@@ -2,8 +2,8 @@
 const router = express.Router();
 const Joi = require('joi');
 const validateRequest = require('_middleware/validate-request');
-const Role = require('_helpers/role');
 const userService = require('./user.service');
+const resp = require('../variables/response');
 
 // routes
 router.post('/register', registerSchema, register);
@@ -14,12 +14,13 @@ module.exports = router;
 // route functions
 function register(req, res, next) {
     userService.register(req)
-        .then(result => res.json({
-            isSuccess: result,
-            message: result == true ? "Đăng ký thành công" : "Email đã được sử dụng trước đó",
-            errorCode: result == true ? null : 100,
-            data: {}
-        }))
+        .then(result => res.json(
+            resp(result, 
+                result == true ? null : 100, 
+                result == true ? "Đăng ký thành công" : "Email đã được sử dụng trước đó", 
+                {}
+            )
+        ))
         .catch(next)
 }
 

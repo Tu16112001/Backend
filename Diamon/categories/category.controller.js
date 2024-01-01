@@ -2,71 +2,48 @@ const express = require('express');
 const router = express.Router();
 const Joi = require('joi');
 const validateRequest = require('_middleware/validate-request');
-const Role = require('_helpers/role');
-const audioService = require('./category.service');
+const authMiddleWare = require("_middleware/authentication");
+const service = require('./category.service');
+const cate = require('../variables/category');
+const { next } = require('cheerio/lib/api/traversing');
+const isAuth = authMiddleWare.isAuth;
 
-// routes
-
-router.get('/:id', getById);
-router.get('/:bookKey', getByBook);
-router.post('/create', createSchema, create);
-router.put('/:id', updateSchema, update);
-router.delete('/:id', _delete);
-
-module.exports = router;
-
-// route functions
-function getById(req, res, next) {
-    audioService.getById(req.params.id)
-        .then(book => res.json(book))
+let create = async (req, res, next) => {
+    service.create(req.body)
+        .then((result) => { return res.status(200).json(result) })
         .catch(next);
 }
 
-function getByBook(req, res, next) {
-    audioService.getByBook(req.params.bookKey)
-        .then(audios => res.json(audios))
-        .catch(next);
-}
-
-function create(req, res, next) {
-    console.log(req.body)
-    audioService.create(req.body)
-        .then(() => res.json({ message: 'Audio created' }))
-        .catch(next);
-}
-
-function update(req, res, next) {
-    userService.update(req.params.id, req.body)
-        .then(() => res.json({ message: 'Audio updated' }))
-        .catch(next);
-}
-
-function _delete(req, res, next) {
-    audioService.delete(req.params.id)
-        .then(() => res.json({ message: 'Audio deleted' }))
-        .catch(next);
-}
-
-// schema functions
-function createSchema(req, res, next) {
+async function createSchema(req, res, next) {
     const schema = Joi.object({
-        order: Joi.number().required(),
         name: Joi.string().required(),
-        mp3: Joi.string().required().empty(''),
-        length: Joi.number().default(0),
-        book_id: Joi.number().required()
+        key: Joi.string().required(),
+        type: Joi.string().default(cate.category)
     });
-    validateRequest(req, next, schema);
-}
-
-function updateSchema(req, res, next) {
-    const schema = Joi.create({
-        order: Joi.number(),
-        name: Joi.string().empty(''),
-        mp3: Joi.string().empty(''), 
-        length: Joi.number().default(0),
-        book_id: Joi.number().required()  
-    })
 
     validateRequest(req, next, schema);
 }
+
+let update = async (req, res, next) => {
+    service.update(req.params.id, req.body)
+        .then((result) => { return res.status(200).json(result) })
+        .catch(next);
+}
+
+let deleteOne = async (req, res, next) => {
+    service.deleteOne(req.params.id)
+        .then((result) => { return res.status(200).json(result) })
+        .catch(next);
+}
+
+let getById = async (req, res, next) => {
+    service.getById(req.params.id)
+    .then((result) => { return res.status(200).json(result) })
+    .catch(next);
+}
+
+router.post('/create', isAuth, createSchema, create);
+router.put('/:id', isAuth, update);
+router.delete('/:id', isAuth, deleteOne);
+router.get('/:id', getById);
+module.exports = router;

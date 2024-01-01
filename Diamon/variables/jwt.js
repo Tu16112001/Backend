@@ -1,5 +1,5 @@
 module.exports = {
     accessTokenSecret: "access-token-secret-diamon-2023",
-    accessTokenLife: "10m",
+    accessTokenLife: "100000m",
     refreshTokenSize: 100,
 }

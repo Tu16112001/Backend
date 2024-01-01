@@ -2,11 +2,10 @@
 const router = express.Router();
 const Joi = require('joi');
 const validateRequest = require('_middleware/validate-request');
-const Role = require('_helpers/role');
+const Role = require('../variables/role');
 const userService = require('./user.service');
 
 // routes
-
 router.get('/', getAll);
 router.get('/:id', getById);
 router.post('/', createSchema, create);
