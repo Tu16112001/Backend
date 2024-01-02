@@ -15,7 +15,7 @@ module.exports = router;
 function register(req, res, next) {
     userService.register(req)
         .then(result => res.json(
-            resp(result, 
+            resp.response(result, 
                 result == true ? null : 100, 
                 result == true ? "Đăng ký thành công" : "Email đã được sử dụng trước đó", 
                 {}
