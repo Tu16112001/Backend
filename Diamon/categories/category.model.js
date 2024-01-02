@@ -7,7 +7,9 @@ function model(sequelize) {
     const attributes = {         
         name: { type: DataTypes.STRING, allowNull: false },
         key: { type: DataTypes.STRING, allowNull: false },
-        type: { type: DataTypes.STRING, allowNull: true},
+        type: {
+            type: DataTypes.ENUM("category", "collection"),
+        },
     };
 
     const options = {

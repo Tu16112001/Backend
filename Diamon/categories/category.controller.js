@@ -5,7 +5,6 @@ const validateRequest = require('_middleware/validate-request');
 const authMiddleWare = require("_middleware/authentication");
 const service = require('./category.service');
 const cate = require('../variables/category');
-const { next } = require('cheerio/lib/api/traversing');
 const isAuth = authMiddleWare.isAuth;
 
 let create = async (req, res, next) => {
@@ -42,8 +41,16 @@ let getById = async (req, res, next) => {
     .catch(next);
 }
 
+let getAll = async (req, res, next) => {
+    service.getAll()
+    .then((result) => { return res.status(200).json(result) })
+    .catch(next);
+}
+
 router.post('/create', isAuth, createSchema, create);
 router.put('/:id', isAuth, update);
 router.delete('/:id', isAuth, deleteOne);
 router.get('/:id', getById);
+router.get('/', getAll);
+
 module.exports = router;

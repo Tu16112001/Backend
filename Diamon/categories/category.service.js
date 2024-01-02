@@ -78,10 +78,17 @@ let getById = async (id) => {
     return resp.response(true, null, "", { category: category });
 }
 
+let getAll = async (id) => {
+    let result = await db.Category.findAll();
+    return resp.response(true, null, "", { categories: result });
+}
+
+
 module.exports = {
     create,
     update,
     getById,
     getByKey,
-    deleteOne
+    deleteOne,
+    getAll
 };
