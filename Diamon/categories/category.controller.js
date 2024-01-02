@@ -47,10 +47,17 @@ let getAll = async (req, res, next) => {
     .catch(next);
 }
 
+let getByType = async (req, res, next) => {
+    service.getByType(req.params.type)
+    .then((result) => { return res.status(200).json(result) })
+    .catch(next);
+}
+
 router.post('/create', isAuth, createSchema, create);
 router.put('/:id', isAuth, update);
 router.delete('/:id', isAuth, deleteOne);
 router.get('/:id', getById);
 router.get('/', getAll);
+router.get('/getByType/:type', getByType);
 
 module.exports = router;

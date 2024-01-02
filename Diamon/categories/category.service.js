@@ -31,8 +31,8 @@ let _checkExisting = async (params) => {
     return category;
 }
 
-let update = async (id, params) => {
-    const category = await getById(id);
+let update = async (id, params) => {    
+    const category = await db.Category.findByPk(id);
 
     if (category == null) {
         return resp.response(false, 100, "Category not found", {});
@@ -78,8 +78,18 @@ let getById = async (id) => {
     return resp.response(true, null, "", { category: category });
 }
 
-let getAll = async (id) => {
+let getAll = async () => {
     let result = await db.Category.findAll();
+    return resp.response(true, null, "", { categories: result });
+}
+
+let getByType = async (type) => {
+    let result = await db.Category.findAll({
+        where: {
+            type: type
+        }
+    });
+
     return resp.response(true, null, "", { categories: result });
 }
 
@@ -90,5 +100,6 @@ module.exports = {
     getById,
     getByKey,
     deleteOne,
-    getAll
+    getAll,
+    getByType
 };
