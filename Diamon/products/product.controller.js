@@ -58,9 +58,9 @@ let deleteOne = async (req, res, next) => {
 /*ROUTERS*/
 
 /*CRUD*/
-router.post('/', createSchema, create);
-router.put('/:id', updateSchema, update);
-router.delete('/:id', deleteOne);
+router.post('/', isAuth, createSchema, create);
+router.put('/:id', isAuth, updateSchema, update);
+router.delete('/:id', isAuth, deleteOne);
 
 /*QUERIES*/
 
