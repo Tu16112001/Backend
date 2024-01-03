@@ -3,7 +3,7 @@ const router = express.Router();
 const Joi = require('joi');
 const validateRequest = require('_middleware/validate-request');
 const authMiddleWare = require("_middleware/authentication");
-const service = require('./product.service');
+const service = require('./cart.service');
 const isAuth = authMiddleWare.isAuth;
 
 let create = async (req, res, next) => {

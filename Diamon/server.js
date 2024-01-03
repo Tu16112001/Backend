@@ -14,11 +14,12 @@ app.use(cors());
 app.use('/users', require('./users/user.controller'));
 app.use('/categories', require('./categories/category.controller'));
 app.use('/products', require('./products/product.controller'));
+app.use('/carts', require('./carts/cart.controller'));
 app.use('/orders', require('./orders/order.controller'));
 
 // global error handler
 app.use(errorHandler);
 
 // start server
-const port = process.env.NODE_ENV === 'production' ? (process.env.PORT || 80) : 6000;
+const port = process.env.NODE_ENV === 'production' ? (process.env.PORT || 80) : 3001;
 app.listen(port, () => console.log('Server listening on port ' + port));

@@ -33,6 +33,7 @@ async function initialize() {
   db.User = require("../users/user.model")(sequelize);
   db.Category = require("../categories/category.model")(sequelize);
   db.Product = require("../products/product.model")(sequelize);  
+  db.Cart = require("../carts/cart.model")(sequelize);  
   // sync all models with database
   await sequelize.sync({ alter: true });
 }
