@@ -1,8 +1,6 @@
-const bcrypt = require('bcryptjs');
 const db = require('_helpers/db');
 const resp = require('../variables/response');
 const { Op } = require("sequelize");
-const { isAuth } = require('../_middleware/authentication');
 
 let create = async (params) => {
     const exist = await _checkExisting({ name: params.name, key: params.key });

@@ -1,29 +1,68 @@
-const bcrypt = require("bcryptjs");
-const db = require("_helpers/db");
+const db = require('_helpers/db');
+const resp = require('../variables/response');
 const { Op } = require("sequelize");
-const { trace } = require("joi");
 
+/*CRUD*/
+let create = async (params) => {
+  const exist = await _checkExisting({ title: params.title, categoryId: params.categoryId });
 
-CURRENT_ANDROID_BUILD = 114
-DEMO_KEY = 1000000
+  if (exist != null) {
+      let result = resp.response(false, 100, "The product is existing", {});
+      return result;
+  }
 
+  const product = new db.Product(params);
+  await product.save();
+
+  return resp.response(true, null, "", { product: product });
+}
+
+let _checkExisting = async (params) => {
+  const category = await db.Product.findOne({
+      where: {
+          [Op.or]: [
+              { categoryId: params.categoryId },
+              { title: params.title }
+          ]
+      }
+  });
+
+  return category;
+}
+
+let update = async (id, params) => {    
+  const product = await db.Product.findByPk(id);
+
+  if (product == null) {
+      return resp.response(false, 100, "Product not found", {});
+  }
+
+  Object.assign(product, params);
+  await product.save();
+
+  return resp.response(true, null, "Product updated", {});
+}
+
+let deleteOne = async (id) => {
+  const product = await db.Product.findByPk(id);
+  if (!product) {
+      return resp.response(false, 100, "Product not found", {});
+  }
+
+  await product.destroy();
+
+  return resp.response(true, null, "Deleted product", {});
+}
 
 module.exports = {
-  getHomePageAndroid,
-  getHomePage,
-  getAll,
-  getByGenre,
-  getById,
   create,
-  createMultiple,
   update,
-  delete: _delete,
-  increaseReadCount,
-  updateLovedBook,
-  updateReadCount,
-  getByGenreIdand
+  deleteOne
 };
 
+/*QUERY*/
+
+/*
 async function getAll() {
   return await db.Book.findAll({
     where: {
@@ -383,3 +422,4 @@ async function getBook(id) {
   if (!book) throw "Book not found";
   return book;
 }
+*/
