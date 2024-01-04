@@ -9,7 +9,8 @@ function model(sequelize) {
         key: { type: DataTypes.STRING, allowNull: false },
         type: {
             type: DataTypes.ENUM("category", "collection"),
-        },
+        },        
+        isAvailable: { type: DataTypes.BOOLEAN, allowNull: false },        
     };
 
     const options = {

@@ -17,7 +17,8 @@ async function createSchema(req, res, next) {
     const schema = Joi.object({
         name: Joi.string().required(),
         key: Joi.string().required(),
-        type: Joi.string().default(cate.category)
+        type: Joi.string().default(cate.category),
+        isAvailable: Joi.boolean().default(true)
     });
 
     validateRequest(req, next, schema);

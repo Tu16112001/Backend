@@ -2,13 +2,13 @@ const db = require('_helpers/db');
 const resp = require('../variables/response');
 const { Op } = require("sequelize");
 
-/*CRUD*/
+/*Crud*/
 let create = async (params) => {
   const exist = await _checkExisting({ title: params.title, categoryId: params.categoryId });
 
   if (exist != null) {
-      let result = resp.response(false, 100, "The product is existing", {});
-      return result;
+    let result = resp.response(false, 100, "The product is existing", {});
+    return result;
   }
 
   const product = new db.Product(params);
@@ -19,22 +19,22 @@ let create = async (params) => {
 
 let _checkExisting = async (params) => {
   const category = await db.Product.findOne({
-      where: {
-          [Op.or]: [
-              { categoryId: params.categoryId },
-              { title: params.title }
-          ]
-      }
+    where: {
+      [Op.or]: [
+        { categoryId: params.categoryId },
+        { title: params.title }
+      ]
+    }
   });
 
   return category;
 }
 
-let update = async (id, params) => {    
+let update = async (id, params) => {
   const product = await db.Product.findByPk(id);
 
   if (product == null) {
-      return resp.response(false, 100, "Product not found", {});
+    return resp.response(false, 100, "Product not found", {});
   }
 
   Object.assign(product, params);
@@ -46,18 +46,63 @@ let update = async (id, params) => {
 let deleteOne = async (id) => {
   const product = await db.Product.findByPk(id);
   if (!product) {
-      return resp.response(false, 100, "Product not found", {});
+    return resp.response(false, 100, "Product not found", {});
   }
 
-  await product.destroy();
+  product.isAvailable = false
+  await book.save();
 
   return resp.response(true, null, "Deleted product", {});
 }
 
+/* Queries */
+
+let getById = async (id) => {
+  const product = await db.Product.findByPk(id);
+  if (!product || product.isAvailable != true) {
+    return resp.response(false, 100, "Product not found", {});
+  }
+
+  return resp.response(true, null, "", { product: product });
+}
+
+let getProduct = async (req) => {
+  let orderField = req.query.orderField || "id";
+  let pageSize = parseInt(req.query.pageSize) || 15;
+  let pageNum = parseInt(req.query.pageNum) || 0;
+  let sortby = (req.query.sortby || "desc").toUpperCase();
+  let categoryId = parseInt(req.query.categoryId);
+
+  console.log(categoryId);
+  var wh = {}
+  if (categoryId != null && categoryId != NaN && categoryId >= 0) {
+    wh = {
+      isAvailable: true,
+      categoryId: categoryId,
+    }
+  } else {
+    wh = {
+      isAvailable: true,
+    }
+  }
+
+  const { count, rows } = await db.Product.findAndCountAll({
+    order: [[orderField, sortby]],
+    where: wh,
+    offset: pageNum * pageSize,
+    limit: parseInt(pageSize),
+  });
+
+  return resp.response(true, null, "", { total: count || 0, products: rows || [] });
+}
+
+
 module.exports = {
   create,
   update,
-  deleteOne
+  deleteOne,
+  getById,
+  getProduct
 };
 
 /*QUERY*/

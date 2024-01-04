@@ -14,8 +14,10 @@ function model(sequelize) {
         content: { type: DataTypes.TEXT, allowNull: false },        
         image: { type: DataTypes.STRING, allowNull: true },
         publishedAt: {type: DataTypes.DATE, allowNull: true},
-        startAt: {type: DataTypes.INTEGER, allowNull: true},
-        endAt: {type: DataTypes.INTEGER, allowNull: true},
+        startAt: {type: DataTypes.DATE, allowNull: true},
+        endAt: {type: DataTypes.DATE, allowNull: true},
+        isAvailable: {type: DataTypes.BOOLEAN, allowNull: false},
+        totalSold: {type: DataTypes.INTEGER, allowNull: true}
     };
 
     const options = {

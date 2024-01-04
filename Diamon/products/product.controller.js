@@ -22,7 +22,9 @@ async function createSchema(req, res, next) {
         discount: Joi.number().required().default(0),
         quantity: Joi.number().required().default(0),
         content: Joi.string().required().default(""),
-        image: Joi.string(),        
+        image: Joi.string(),    
+        isAvailable: Joi.boolean().default(true),
+        totalSold: Joi.number().default(0)    
     });
 
     validateRequest(req, next, schema);
@@ -55,11 +57,25 @@ let deleteOne = async (req, res, next) => {
         .catch(next);
 }
 
+let getById = async (req, res, next) => {
+    service.getById(req.params.id)
+        .then((result) => { return res.status(200).json(result) })
+        .catch(next);
+}
+
+let getProducts = async (req, res, next) => {
+    service.getProduct(req)
+        .then((result) => { return res.status(200).json(result) })
+        .catch(next);
+}
+
 /*CRUD*/
 router.post('/', isAuth, createSchema, create);
 router.put('/:id', isAuth, updateSchema, update);
 router.delete('/:id', isAuth, deleteOne);
 
 /*QUERIES*/
+router.get('/', getProducts);
+router.get('/:id', getById);
 
 module.exports = router;

@@ -48,7 +48,8 @@ let deleteOne = async (id) => {
         return resp.response(false, 100, "Category not found", {});
     }
 
-    await category.destroy();
+    category.isAvailable = false
+    await book.save();
 
     return resp.response(true, null, "Deleted category", {});
 }
@@ -56,11 +57,12 @@ let deleteOne = async (id) => {
 let getByKey = async (key) => {
     const category = await db.Category.findOne({
         where: {
-            key: key
+            key: key,
+            isAvailable: true
         }
     });
 
-    if (!category) {
+    if (!category || category.isAvailable != true) {
         return resp.response(false, 100, "Category not found", {});
     }
 
@@ -69,7 +71,7 @@ let getByKey = async (key) => {
 
 let getById = async (id) => {
     const category = await db.Category.findByPk(id);
-    if (!category) {
+    if (!category || category.isAvailable != true) {
         return resp.response(false, 100, "Category not found", {});
     }
 
@@ -77,14 +79,19 @@ let getById = async (id) => {
 }
 
 let getAll = async () => {
-    let result = await db.Category.findAll();
+    let result = await db.Category.findAll({
+        where: {
+            isAvailable: true
+        }
+    });
     return resp.response(true, null, "", { categories: result });
 }
 
 let getByType = async (type) => {
     let result = await db.Category.findAll({
         where: {
-            type: type
+            type: type,
+            isAvailable: true
         }
     });
 
