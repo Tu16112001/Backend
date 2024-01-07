@@ -3,7 +3,7 @@ const router = express.Router();
 const Joi = require('joi');
 const validateRequest = require('_middleware/validate-request');
 const authMiddleWare = require("_middleware/authentication");
-const service = require('./cart.service');
+const service = require('./cart_item.service');
 const isAuth = authMiddleWare.isAuth;
 
 let create = async (req, res, next) => {
@@ -14,8 +14,11 @@ let create = async (req, res, next) => {
 
 async function createSchema(req, res, next) {
     const schema = Joi.object({
-        userId: Joi.number().required(),
-        status: Joi.number().default(0)
+        productId: Joi.number().required(),
+        cartId: Joi.number().required(),
+        price: Joi.number.required(),
+        quantity: Joi.number().required().default(0),
+        note: Joi.string().required().default(""),
     });
 
     validateRequest(req, next, schema);
@@ -29,33 +32,26 @@ let update = async (req, res, next) => {
 
 async function updateSchema(req, res, next) {
     const schema = Joi.object({
-        status: Joi.number().default(0),
-        fullName: Joi.string().default(""),
-        mobile: Joi.string().default(""),
-        address: Joi.string().default(""),
-        note: Joi.string().default("")
+        productId: Joi.number().required(),
+        cartId: Joi.number().required(),
+        price: Joi.number.required(),
+        quantity: Joi.number().required().default(0),
+        note: Joi.string().required().default(""),
     });
 
     validateRequest(req, next, schema);
 }
 
-let cleanCart = async (req, res, next) => {
-    service.cleanCart(req.params.id)
+let deleteOne = async (req, res, next) => {
+    service.deleteOne(req.params.id)
         .then((result) => { return res.status(200).json(result) })
         .catch(next);
-}
-
-let getCart = async (req, res, next) => { 
-    service.getCart(req.params.id)
-    .then((result) => { return res.status(200).json(result) })
-    .catch(next);
 }
 
 /*CRUD*/
 router.post('/', isAuth, createSchema, create);
 router.put('/:id', isAuth, updateSchema, update);
-router.delete('/clean/:id', isAuth, cleanCart);
-router.get('/:id', isAuth, getCart);
+router.delete('/:id', isAuth, deleteOne);
 
 /*QUERIES*/
 

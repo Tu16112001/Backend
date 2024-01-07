@@ -34,6 +34,8 @@ async function initialize() {
   db.Category = require("../categories/category.model")(sequelize);
   db.Product = require("../products/product.model")(sequelize);  
   db.Cart = require("../carts/cart.model")(sequelize);  
+  db.CartItem = require("../cart_items/cart_item.model")(sequelize);  
+
   // sync all models with database
   await sequelize.sync({ alter: true });
 }

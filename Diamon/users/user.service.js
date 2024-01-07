@@ -4,6 +4,7 @@ const jwtVariable = require('../variables/jwt');
 const randToken = require('rand-token');
 const helper = require('../_helpers/jwt.helper');
 const resp = require('../variables/response');
+const cart = require('../carts/cart.service');
 
 let register = async (req) => {
     console.log(req.body)
@@ -26,6 +27,9 @@ let register = async (req) => {
 
         const user = new db.User(newUser);
         await user.save();
+
+        const cart = new db.Cart({ userId: user.id, status: 0 });
+        await cart.save();
     })
 
     return true
@@ -73,7 +77,15 @@ let login = async (req) => {
             }
 
             user.password = ""
-            return resp.response(true, null, "", { user: user, accessToken: accessToken, refreshToken: refreshToken });
+
+            const cart = await db.Cart.findOne({
+                where: {
+                    userId: user.id
+                }
+            });
+
+
+            return resp.response(true, null, "", { user: user, accessToken: accessToken, refreshToken: refreshToken, cart: cart });
         }
     };
 };

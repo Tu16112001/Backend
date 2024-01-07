@@ -4,18 +4,13 @@ module.exports = model;
 
 function model(sequelize) {
     const attributes = {
-        categoryId: {type: DataTypes.INTEGER, allowNull: false},
         userId: {type: DataTypes.INTEGER, allowNull: false},
-        title: { type: DataTypes.STRING, allowNull: false },        
-        sumary: { type: DataTypes.TEXT, allowNull: false },
-        price: { type: DataTypes.DOUBLE, allowNull: false },
-        discount: { type: DataTypes.DOUBLE, allowNull: false },
-        quantity: {type: DataTypes.INTEGER, allowNull: false},
-        content: { type: DataTypes.TEXT, allowNull: false },        
-        image: { type: DataTypes.STRING, allowNull: true },
-        publishedAt: {type: DataTypes.DATE, allowNull: true},
-        startAt: {type: DataTypes.INTEGER, allowNull: true},
-        endAt: {type: DataTypes.INTEGER, allowNull: true},
+        status: { type: DataTypes.INTEGER, allowNull: false },        
+        fullName: { type: DataTypes.STRING, allowNull: true },
+        mobile: { type: DataTypes.STRING, allowNull: true },
+        email: { type: DataTypes.STRING, allowNull: true },
+        address: {type: DataTypes.STRING, allowNull: true},
+        note: { type: DataTypes.TEXT, allowNull: true },        
     };
 
     const options = {
