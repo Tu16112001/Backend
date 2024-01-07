@@ -18,16 +18,14 @@ let create = async (params) => {
 }
 
 let _checkExisting = async (params) => {
-  const category = await db.Product.findOne({
+  const product = await db.Product.findOne({
     where: {
-      [Op.or]: [
-        { categoryId: params.categoryId },
-        { title: params.title }
-      ]
+      title: params.title,
+      categoryId: params.categoryId
     }
   });
 
-  return category;
+  return product;
 }
 
 let update = async (id, params) => {
