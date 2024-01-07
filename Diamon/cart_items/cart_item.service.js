@@ -2,15 +2,15 @@ const db = require('_helpers/db');
 const response = require('../variables/response');
 
 /*CRUD*/
-let create = async (params) => {
-  const item = await _checkExisting({ productId: productId, cartId: params.cartId });
+let create = async (body) => {
+  const item = await _checkExisting(body.productId, body.cartId );
 
-  if (exist != null) {
-    item.quantity = Number(item.quantity) + Number(params.quantity)
+  if (item != null) {
+    item.quantity = Number(item.quantity) + Number(body.quantity)
     await item.save();
     return response.create(true, null, "", { item: item });
   } else {
-    const newItem = new db.CartItem(params);
+    const newItem = new db.CartItem(body);
     await newItem.save();
     return response.create(true, null, "", { item: newItem });
   }

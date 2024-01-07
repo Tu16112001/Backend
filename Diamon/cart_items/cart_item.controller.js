@@ -16,9 +16,8 @@ async function createSchema(req, res, next) {
     const schema = Joi.object({
         productId: Joi.number().required(),
         cartId: Joi.number().required(),
-        price: Joi.number.required(),
-        quantity: Joi.number().required().default(0),
-        note: Joi.string().required().default(""),
+        price: Joi.number().required(),
+        quantity: Joi.number().required().default(0)
     });
 
     validateRequest(req, next, schema);
@@ -34,9 +33,8 @@ async function updateSchema(req, res, next) {
     const schema = Joi.object({
         productId: Joi.number().required(),
         cartId: Joi.number().required(),
-        price: Joi.number.required(),
-        quantity: Joi.number().required().default(0),
-        note: Joi.string().required().default(""),
+        price: Joi.number().required(),
+        quantity: Joi.number().required().default(0)
     });
 
     validateRequest(req, next, schema);

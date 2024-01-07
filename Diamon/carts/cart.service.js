@@ -58,9 +58,19 @@ let getCart = async (id) => {
     },
   });
 
-  cart.items = items || [];
+  var result = {
+    id: cart.id,
+    userId: cart.userId,
+    status: cart.status,
+    fullName: cart.fullName,
+    mobile: cart.mobile,
+    email: cart.email,
+    address: cart.address,
+    note: cart.note,
+    items: items || []
+  }
 
-  return resp.response(true, null, "", { cart: cart });
+  return resp.response(true, null, "", {cart: result});
 }
 
 module.exports = {
