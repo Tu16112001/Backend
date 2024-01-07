@@ -49,7 +49,7 @@ let deleteOne = async (id) => {
     }
 
     category.isAvailable = false
-    await book.save();
+    await category.save();
 
     return resp.response(true, null, "Deleted category", {});
 }
