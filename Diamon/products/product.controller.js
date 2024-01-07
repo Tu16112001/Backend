@@ -69,6 +69,12 @@ let getProducts = async (req, res, next) => {
         .catch(next);
 }
 
+let searchProducts = async (req, res, next) => {
+    service.searchProduct(req)
+        .then((result) => { return res.status(200).json(result) })
+        .catch(next);
+}
+
 /*CRUD*/
 router.post('/', isAuth, createSchema, create);
 router.put('/:id', isAuth, updateSchema, update);
@@ -76,6 +82,8 @@ router.delete('/:id', isAuth, deleteOne);
 
 /*QUERIES*/
 router.get('/', getProducts);
+router.get('/search', searchProducts);
 router.get('/:id', getById);
+
 
 module.exports = router;

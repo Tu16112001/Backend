@@ -1,6 +1,7 @@
 const db = require('_helpers/db');
 const resp = require('../variables/response');
 const { Op } = require("sequelize");
+const { configDotenv } = require('dotenv');
 
 /*Crud*/
 let create = async (params) => {
@@ -94,13 +95,36 @@ let getProduct = async (req) => {
   return resp.response(true, null, "", { total: count || 0, products: rows || [] });
 }
 
+let searchProduct = async (req) => {
+  let pageSize = parseInt(req.query.pageSize) || 15;
+  let pageNum = parseInt(req.query.pageNum) || 0;
+  let keyword = req.query.keyword || ""
+
+  if (keyword == "") {
+    return resp.response(true, null, "", { total: 0, products: [] });
+  }
+
+  console.log('START SEARCH');
+  const { count, rows } = await db.Product.findAndCountAll({
+    where: {
+      title: {
+        [Op.like]: keyword + '%'
+      }
+    },
+    offset: pageNum * pageSize,
+    limit: parseInt(pageSize),
+  });
+
+  return resp.response(true, null, "", { total: count || 0, products: rows || [] });
+}
 
 module.exports = {
   create,
   update,
   deleteOne,
   getById,
-  getProduct
+  getProduct,
+  searchProduct
 };
 
 /*QUERY*/
