@@ -42,27 +42,27 @@ let update = async (id, params) => {
     return resp.response(true, null, "Category updated", {});
 }
 
-let deleteOne = async (id) => {
+let updateActive = async (id, isActive) => {
     const category = await db.Category.findByPk(id);
     if (!category) {
         return resp.response(false, 100, "Category not found", {});
     }
 
-    category.isAvailable = false
+    category.isAvailable = isActive
     await category.save();
 
-    return resp.response(true, null, "Deleted category", {});
+    return resp.response(true, null, "Updated category", {});
 }
+
 
 let getByKey = async (key) => {
     const category = await db.Category.findOne({
         where: {
-            key: key,
-            isAvailable: true
+            key: key
         }
     });
 
-    if (!category || category.isAvailable != true) {
+    if (!category) {
         return resp.response(false, 100, "Category not found", {});
     }
 
@@ -71,7 +71,7 @@ let getByKey = async (key) => {
 
 let getById = async (id) => {
     const category = await db.Category.findByPk(id);
-    if (!category || category.isAvailable != true) {
+    if (!category) {
         return resp.response(false, 100, "Category not found", {});
     }
 
@@ -79,19 +79,14 @@ let getById = async (id) => {
 }
 
 let getAll = async () => {
-    let result = await db.Category.findAll({
-        where: {
-            isAvailable: true
-        }
-    });
+    let result = await db.Category.findAll();
     return resp.response(true, null, "", { categories: result });
 }
 
 let getByType = async (type) => {
     let result = await db.Category.findAll({
         where: {
-            type: type,
-            isAvailable: true
+            type: type
         }
     });
 
@@ -104,7 +99,7 @@ module.exports = {
     update,
     getById,
     getByKey,
-    deleteOne,
+    updateActive,
     getAll,
     getByType
 };

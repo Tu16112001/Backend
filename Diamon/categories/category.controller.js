@@ -31,7 +31,7 @@ let update = async (req, res, next) => {
 }
 
 let deleteOne = async (req, res, next) => {
-    service.deleteOne(req.params.id)
+    service.updateActive(req.params.id, req.body.isActive)
         .then((result) => { return res.status(200).json(result) })
         .catch(next);
 }
@@ -56,7 +56,7 @@ let getByType = async (req, res, next) => {
 
 router.post('/create', isAuth, createSchema, create);
 router.put('/:id', isAuth, update);
-router.delete('/:id', isAuth, deleteOne);
+router.put('/active/:id', isAuth, deleteOne);
 router.get('/:id', getById);
 router.get('/', getAll);
 router.get('/getByType/:type', getByType);
