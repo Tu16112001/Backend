@@ -14,8 +14,9 @@ let create = async (req) => {
         order: [["createdAt", "DESC"]],
     });
 
-    console.log(cart);
-    console.log(items);
+    if (cart == null || cart == undefined || items.length == 0) {
+        return resp.response(false, 100, "The cart is empty", {});
+    }
 
     let subtotal = 0;
     let total = 0;
@@ -64,6 +65,10 @@ let create = async (req) => {
         await orderItem.save();
     }
 
+    for (var i = 0; i < items.length; i++) { 
+        await items[i].destroy();
+    }
+   
     return resp.response(true, null, "Created order", {});
 }
 
