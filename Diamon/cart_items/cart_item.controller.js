@@ -15,9 +15,11 @@ let create = async (req, res, next) => {
 async function createSchema(req, res, next) {
     const schema = Joi.object({
         productId: Joi.number().required(),
-        cartId: Joi.number().required(),
+        cartId: Joi.number().required(),        
+        quantity: Joi.number().required().default(0),
         price: Joi.number().required(),
-        quantity: Joi.number().required().default(0)
+        discount: Joi.number().default(0),
+        image: Joi.string().default("")
     });
 
     validateRequest(req, next, schema);

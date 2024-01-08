@@ -17,6 +17,7 @@ app.use('/products', require('./products/product.controller'));
 app.use('/carts', require('./carts/cart.controller'));
 app.use('/cartItems', require('./cart_items/cart_item.controller'));
 app.use('/orders', require('./orders/order.controller'));
+app.use('/orderItems', require('./order_items/order_item.controller'));
 
 // global error handler
 app.use(errorHandler);

@@ -2,4 +2,8 @@
 const router = express.Router();
 const Joi = require('joi');
 const validateRequest = require('_middleware/validate-request');
+const authMiddleWare = require("_middleware/authentication");
+const service = require('./order.service');
+const isAuth = authMiddleWare.isAuth;
+
 module.exports = router;

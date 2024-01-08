@@ -3,14 +3,23 @@ const response = require('../variables/response');
 
 /*CRUD*/
 let create = async (body) => {
+  const product = await db.Product.findByPk(body.productId);
   const item = await _checkExisting(body.productId, body.cartId );
 
   if (item != null) {
     item.quantity = Number(item.quantity) + Number(body.quantity)
+    item.price = product.price;
+    item.discount = product.discount;
+    item.image = product.image;
+
     await item.save();
     return response.create(true, null, "", { item: item });
   } else {
     const newItem = new db.CartItem(body);
+    newItem.price = product.price;
+    newItem.discount = product.discount;
+    newItem.image = product.image;
+
     await newItem.save();
     return response.create(true, null, "", { item: newItem });
   }
