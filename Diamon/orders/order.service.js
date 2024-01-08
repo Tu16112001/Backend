@@ -65,10 +65,10 @@ let create = async (req) => {
         await orderItem.save();
     }
 
-    for (var i = 0; i < items.length; i++) { 
+    for (var i = 0; i < items.length; i++) {
         await items[i].destroy();
     }
-   
+
     return resp.response(true, null, "Created order", {});
 }
 
@@ -82,7 +82,35 @@ let updateStatus = async (orderId, status) => {
     return resp.response(true, null, "Updated order status", {});
 }
 
+let getByUser = async (req) => {
+    const user = req.user;
+    let result = await db.Order.findAll({
+        where: {
+            userId: user.userId
+        }
+    });
+
+    return resp.response(true, null, "", { orders: result || [] });
+}
+
+let getAllOrder = async (req) => {
+    let orderField = req.query.orderField || "id";
+    let pageSize = parseInt(req.query.pageSize) || 15;
+    let pageNum = parseInt(req.query.pageNum) || 0;
+    let sortby = (req.query.sortby || "desc").toUpperCase();
+
+    const { count, rows } = await db.Order.findAndCountAll({
+        order: [[orderField, sortby]],
+        offset: pageNum * pageSize,
+        limit: parseInt(pageSize),
+    });
+
+    return resp.response(true, null, "", { total: count || 0, orders: rows || [] });
+}
+
 module.exports = {
     create,
-    updateStatus
+    updateStatus,
+    getByUser,
+    getAllOrder
 };
