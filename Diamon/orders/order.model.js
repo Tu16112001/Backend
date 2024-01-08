@@ -18,5 +18,9 @@ function model(sequelize) {
         note: {type: DataTypes.STRING, allowNull: true}
     };
 
+    const options = {
+    };
+
+
     return sequelize.define('Order', attributes, options);
 }

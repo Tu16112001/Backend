@@ -26,7 +26,7 @@ exports.isAuth = async (req, res, next) => {
         accessTokenSecret
     );
 
-    req.user = user;
+    req.user = user.payload || {};
 
     console.log("DECODE USER", user);
 

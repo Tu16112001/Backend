@@ -1,7 +1,6 @@
 const db = require('_helpers/db');
 const resp = require('../variables/response');
 const { Op } = require("sequelize");
-const { configDotenv } = require('dotenv');
 
 /*Crud*/
 let create = async (params) => {

@@ -54,8 +54,9 @@ let getCart = async (id) => {
   const cart = await db.Cart.findByPk(id);
   const items = await db.CartItem.findAll({
     where: {
-      cartId: id,
+      cartId: id,      
     },
+    order: [["createdAt", "DESC"]],
   });
 
   var result = {
