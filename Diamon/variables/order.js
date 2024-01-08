@@ -6,5 +6,6 @@ module.exports = {
     shipped: 4,
     delivered: 5,
     returned: 6,
-    completed: 7
+    completed: 7,
+    canceled: 8
 }
