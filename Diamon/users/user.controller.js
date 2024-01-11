@@ -4,10 +4,12 @@ const Joi = require('joi');
 const validateRequest = require('_middleware/validate-request');
 const userService = require('./user.service');
 const resp = require('../variables/response');
+const { isAuth } = require('../_middleware/authentication');
 
 // routes
 router.post('/register', registerSchema, register);
 router.post('/login', login);
+router.get('/logout', isAuth, logout);
 
 module.exports = router;
 
@@ -26,6 +28,12 @@ function register(req, res, next) {
 
 function login(req, res, next) {
     userService.login(req)
+        .then(result => res.json(result))
+        .catch(next)
+}
+
+function logout(req, res, next) {
+    userService.logout(req)
         .then(result => res.json(result))
         .catch(next)
 }

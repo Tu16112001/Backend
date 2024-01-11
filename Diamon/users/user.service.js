@@ -108,8 +108,25 @@ let findUser = async (body) => {
     return user;
 }
 
+let logout = async (req) => {
+    const current = req.user;
+    console.log(current);
+    const user = await db.User.findOne({
+        where: {
+            id: current.userId
+        }
+    });
+
+    user.accessToken = "";
+    user.refreshToken = "";
+    await user.save();
+
+    return resp.response(true, null, "Logedout successfully", {});
+}
+
 module.exports = {
     register,
     login,
+    logout,
     isLogging
 };
