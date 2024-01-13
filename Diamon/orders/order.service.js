@@ -2,6 +2,7 @@
 const db = require('_helpers/db');
 const orderStatsus = require('../variables/order');
 const resp = require('../variables/response');
+const { or } = require('sequelize');
 
 let create = async (req) => {
     const user = req.user;
@@ -108,9 +109,41 @@ let getAllOrder = async (req) => {
     return resp.response(true, null, "", { total: count || 0, orders: rows || [] });
 }
 
+let getOrder = async (req) => {
+    const id = req.params.id;
+    const order = await db.Order.findByPk(id);
+    const items = await db.OrderItem.findAll({
+        where: {
+            orderId: id,
+        },
+        order: [["createdAt", "DESC"]],
+    });
+
+    var result = {
+        id: order.id,
+        userId: order.userId,
+        status: order.status,
+        fullName: order.fullName,
+        mobile: order.phone,
+        email: order.email,
+        address: order.address,
+        note: order.note,
+        paymentMethod: order.paymentMethod,
+        subtotal: order.subtotal,
+        total: order.order,
+        discount: order.discount,
+        tax: order.tax,
+        items: items || [],        
+    }
+
+    return resp.response(true, null, "", { order: result });
+
+}
+
 module.exports = {
     create,
     updateStatus,
     getByUser,
-    getAllOrder
+    getAllOrder,
+    getOrder
 };

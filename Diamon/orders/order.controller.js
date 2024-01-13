@@ -38,9 +38,16 @@ let getAll = async (req, res, next) => {
     .catch(next);
 }
 
+let getOrder = async (req, res, next) => { 
+    service.getOrder(req)
+    .then((result) => { return res.status(200).json(result) })
+    .catch(next);
+}
+
 router.post('/', isAuth, createSchema, create);
 router.get('/', isAuth, getAll);
 router.get('/byCurrentUser', isAuth, getByUser);
 router.put('/status/:id', isAuth, updateStatus);
+router.get('/:id', isAuth, getOrder);
 
 module.exports = router;
