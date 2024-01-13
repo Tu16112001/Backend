@@ -10,7 +10,8 @@ function model(sequelize) {
         mobile: { type: DataTypes.STRING, allowNull: true },
         email: { type: DataTypes.STRING, allowNull: true },
         address: {type: DataTypes.STRING, allowNull: true},
-        note: { type: DataTypes.TEXT, allowNull: true },        
+        note: { type: DataTypes.TEXT, allowNull: true },
+        paymentMethod: { type: DataTypes.INTEGER, allowNull: false },
     };
 
     const options = {

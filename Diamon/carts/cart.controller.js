@@ -33,7 +33,8 @@ async function updateSchema(req, res, next) {
         fullName: Joi.string().default(""),
         mobile: Joi.string().default(""),
         address: Joi.string().default(""),
-        note: Joi.string().default("")
+        note: Joi.string().default(""),
+        paymentMethod: Joi.number().default(0)
     });
 
     validateRequest(req, next, schema);
