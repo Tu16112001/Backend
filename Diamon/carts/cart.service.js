@@ -68,7 +68,8 @@ let getCart = async (id) => {
     email: cart.email,
     address: cart.address,
     note: cart.note,
-    items: items || []
+    items: items || [],
+    paymentMethod: cart.paymentMethod
   }
 
   return resp.response(true, null, "", {cart: result});
