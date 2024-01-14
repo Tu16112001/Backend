@@ -11,7 +11,7 @@ function model(sequelize) {
         email: { type: DataTypes.STRING, allowNull: true },
         address: {type: DataTypes.STRING, allowNull: true},
         note: { type: DataTypes.TEXT, allowNull: true },
-        paymentMethod: { type: DataTypes.INTEGER, allowNull: false },
+        paymentMethod: { type: DataTypes.INTEGER, allowNull: true },
     };
 
     const options = {
